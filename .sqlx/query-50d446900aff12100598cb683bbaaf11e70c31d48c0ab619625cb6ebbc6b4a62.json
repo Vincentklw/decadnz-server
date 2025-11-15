@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO object_database(object_id, namespace, name, created_at)\r\nVALUES (UUID(), ?, ?, NOW());",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "50d446900aff12100598cb683bbaaf11e70c31d48c0ab619625cb6ebbc6b4a62"
+}

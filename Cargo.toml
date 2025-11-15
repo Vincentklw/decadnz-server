@@ -1,0 +1,15 @@
+[package]
+name = "decadnz-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sqlx = { version = "0.8.6", features = ["mysql", "macros", "runtime-async-std"] }
+dotenv = "0.15.0"
+env_logger = "0.11.8"
+log = "0.4.28"
+actix-web = "4.11.0"
+juniper_actix = "0.7.0"
+juniper = { version = "0.17.0", features = ["uuid", "chrono"] }
+tokio = { version = "1.48.0", features = ["full"] }
+tokio-macros = { version = "0.2.0-alpha.6" }

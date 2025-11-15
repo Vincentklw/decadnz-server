@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "CREATE TABLE IF NOT EXISTS object_database\r\n(\r\n    object_id  UUID,\r\n    namespace  VARCHAR(265),\r\n    name       VARCHAR(265),\r\n    created_at DATETIME\r\n);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "c45870d63c75a47d2d31a5693a044ee16679103ef608d094ba24c513fec47522"
+}
