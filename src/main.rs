@@ -2,8 +2,8 @@ pub(crate) mod database;
 pub(crate) mod graphql;
 pub(crate) mod error;
 
+use crate::database::attribute_database::{AttributeDatabase, AttributeDatabaseTrait};
 use crate::database::object_database::{ObjectDatabase, ObjectDatabaseTrait};
-
 use crate::graphql::webserver::Webserver;
 use dotenv::dotenv;
 use log::info;
@@ -31,8 +31,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .connect("mysql://root:pw@localhost:3306/decadnz").await?;
 
     let object_db: Arc<Box<dyn ObjectDatabaseTrait>> = Arc::new(Box::new(ObjectDatabase::init(pool.clone()).await?));
-
-    object_db.create("user::user".to_string(), "User".to_string()).await?;
+    let attribute_db: Arc<Box<dyn AttributeDatabaseTrait>> = Arc::new(Box::new(AttributeDatabase::init(pool.clone()).await?));
 
     let graphql_webserver = Webserver {
         object_database: object_db.clone(),
