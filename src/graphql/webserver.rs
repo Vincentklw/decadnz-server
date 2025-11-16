@@ -1,7 +1,7 @@
 use crate::database::object_database::ObjectDatabaseTrait;
 use crate::graphql::request_context::{RequestContext, RequestContextDatabase};
 use crate::graphql::schema;
-use crate::graphql::schema::{Schema, SchemaDependencies};
+use crate::graphql::schema::Schema;
 use actix_web::body::MessageBody;
 use actix_web::dev::{Server, ServiceFactory, ServiceRequest, ServiceResponse};
 use actix_web::web::Data;
@@ -12,21 +12,26 @@ use std::sync::Arc;
 
 pub struct Webserver;
 impl Webserver {
-    pub async fn serve(self, port: i32, schema_dependencies: SchemaDependencies) -> Result<Server, actix_web::Error> {
+    pub async fn serve(self, port: i32, server_dependencies: ServerDependencies) -> Result<Server, actix_web::Error> {
         info!("Starting GraphQL server on port {}...", &port);
 
 
-        let server = HttpServer::new(move || { WebApp::build(schema_dependencies.clone()) });
+        let server = HttpServer::new(move || { WebApp::build(server_dependencies.clone()) });
         Ok(server.bind(format!("0.0.0.0:{}", port))?.run())
     }
+}
+
+#[derive(Clone)]
+pub struct ServerDependencies {
+    pub object_database: Arc<Box<dyn ObjectDatabaseTrait>>,
 }
 
 struct WebApp {}
 
 impl WebApp {
-    fn build(schema_dependencies: SchemaDependencies) -> App<impl ServiceFactory<ServiceRequest, Config=(), Response=ServiceResponse<impl MessageBody>, Error=actix_web::Error, InitError=()>> {
+    fn build(server_dependencies: ServerDependencies) -> App<impl ServiceFactory<ServiceRequest, Config=(), Response=ServiceResponse<impl MessageBody>, Error=actix_web::Error, InitError=()>> {
         App::new()
-            .app_data(Data::new(schema_dependencies.object_database.clone()))
+            .app_data(Data::new(server_dependencies))
             .app_data(Data::new(schema::schema()))
             .wrap(middleware::Logger::default())
             .service(
@@ -39,10 +44,11 @@ impl WebApp {
     }
 
     async fn graphql_route(req: actix_web::HttpRequest, payload: web::Payload, schema: Data<Schema>) -> Result<HttpResponse, actix_web::Error> {
+        let dependencies = req.app_data::<Data<ServerDependencies>>().unwrap();
         let context = RequestContext {
             auth_token: None,
             databases: RequestContextDatabase {
-                object_database: (***req.app_data::<Data<Arc<Box<dyn ObjectDatabaseTrait>>>>().unwrap()).clone(),
+                object_database: dependencies.object_database.clone(),
             },
         };
         graphql_handler(

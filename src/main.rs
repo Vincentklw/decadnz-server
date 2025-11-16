@@ -4,8 +4,7 @@ pub(crate) mod error;
 
 use crate::database::attribute_database::{AttributeDatabase, AttributeDatabaseTrait};
 use crate::database::object_database::{ObjectDatabase, ObjectDatabaseTrait};
-use crate::graphql::schema::SchemaDependencies;
-use crate::graphql::webserver::Webserver;
+use crate::graphql::webserver::{ServerDependencies, Webserver};
 use dotenv::dotenv;
 use log::info;
 use sqlx::mysql::MySqlPoolOptions;
@@ -36,7 +35,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let graphql_webserver = Webserver {};
 
-    let graphql_schema_dependencies = SchemaDependencies {
+    let graphql_schema_dependencies = ServerDependencies {
         object_database: object_db.clone(),
     };
 
