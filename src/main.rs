@@ -4,10 +4,11 @@ pub(crate) mod error;
 
 use crate::database::attribute_database::{AttributeDatabase, AttributeDatabaseTrait};
 use crate::database::object_database::{ObjectDatabase, ObjectDatabaseTrait};
-use crate::graphql::webserver::Webserver;
+use crate::graphql::webserver::{ServerDependencies, Webserver};
 use dotenv::dotenv;
 use log::info;
 use sqlx::mysql::MySqlPoolOptions;
+use std::env;
 use std::error::Error;
 use std::sync::Arc;
 
@@ -27,17 +28,27 @@ async fn main() -> Result<(), Box<dyn Error>> {
     info!("Starting in version {}", app_version);
     info!(r"");
 
+    let database_hostname = env::var("DATABASE_HOSTNAME")?;
+    let database_port = env::var("DATABASE_PORT")?.parse::<i32>()?;
+    let database_username = env::var("DATABASE_USERNAME")?;
+    let database_password = env::var("DATABASE_PASSWORD")?;
+    let database_database = env::var("DATABASE_DATABASE")?;
+
+    let database_connection_string = format!("mysql://{}:{}@{}:{}/{}", database_username, database_password, database_hostname, database_port, database_database);
+
     let pool = MySqlPoolOptions::new()
-        .connect("mysql://root:pw@localhost:3306/decadnz").await?;
+        .connect(&*database_connection_string).await?;
 
     let object_db: Arc<Box<dyn ObjectDatabaseTrait>> = Arc::new(Box::new(ObjectDatabase::init(pool.clone()).await?));
     let attribute_db: Arc<Box<dyn AttributeDatabaseTrait>> = Arc::new(Box::new(AttributeDatabase::init(pool.clone()).await?));
 
-    let graphql_webserver = Webserver {
+    let graphql_webserver = Webserver {};
+
+    let graphql_schema_dependencies = ServerDependencies {
         object_database: object_db.clone(),
     };
 
-    let gql_thread = tokio::spawn(graphql_webserver.serve(6111).await?);
+    let gql_thread = tokio::spawn(graphql_webserver.serve(6111, graphql_schema_dependencies).await?);
 
     tokio::select! {
         _ = tokio::signal::ctrl_c() => {

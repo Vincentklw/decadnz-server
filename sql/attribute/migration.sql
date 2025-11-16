@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS attribute_database
 (
     attribute_id  UUID PRIMARY KEY,
-    object_id     UUID,
-    name          VARCHAR(256),
+    object_id     UUID         NOT NULL,
+    name          VARCHAR(256) NOT NULL,
     description   TEXT,
-    type          VARCHAR(32),
+    type          VARCHAR(32)  NOT NULL,
     default_value TEXT,
-    FOREIGN KEY (object_id) REFERENCES object_database (object_id)
+    FOREIGN KEY (object_id) REFERENCES object_database (object_id),
+    UNIQUE (object_id, name)
 )
