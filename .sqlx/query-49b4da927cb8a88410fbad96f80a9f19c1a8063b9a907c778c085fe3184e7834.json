@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "CREATE TABLE IF NOT EXISTS attribute_database\r\n(\r\n    attribute_id  UUID PRIMARY KEY,\r\n    object_id     UUID         NOT NULL,\r\n    name          VARCHAR(256) NOT NULL,\r\n    description   TEXT,\r\n    type          VARCHAR(32)  NOT NULL,\r\n    default_value TEXT,\r\n    FOREIGN KEY (object_id) REFERENCES object_database (object_id),\r\n    UNIQUE (object_id, name)\r\n)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "49b4da927cb8a88410fbad96f80a9f19c1a8063b9a907c778c085fe3184e7834"
+}

@@ -4,6 +4,7 @@ pub(crate) mod error;
 
 use crate::database::attribute_database::{AttributeDatabase, AttributeDatabaseTrait};
 use crate::database::object_database::{ObjectDatabase, ObjectDatabaseTrait};
+use crate::graphql::schema::SchemaDependencies;
 use crate::graphql::webserver::Webserver;
 use dotenv::dotenv;
 use log::info;
@@ -33,11 +34,13 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let object_db: Arc<Box<dyn ObjectDatabaseTrait>> = Arc::new(Box::new(ObjectDatabase::init(pool.clone()).await?));
     let attribute_db: Arc<Box<dyn AttributeDatabaseTrait>> = Arc::new(Box::new(AttributeDatabase::init(pool.clone()).await?));
 
-    let graphql_webserver = Webserver {
+    let graphql_webserver = Webserver {};
+
+    let graphql_schema_dependencies = SchemaDependencies {
         object_database: object_db.clone(),
     };
 
-    let gql_thread = tokio::spawn(graphql_webserver.serve(6111).await?);
+    let gql_thread = tokio::spawn(graphql_webserver.serve(6111, graphql_schema_dependencies).await?);
 
     tokio::select! {
         _ = tokio::signal::ctrl_c() => {

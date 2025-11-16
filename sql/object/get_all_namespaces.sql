@@ -1,0 +1,2 @@
+SELECT DISTINCT namespace
+FROM object_database

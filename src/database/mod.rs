@@ -4,3 +4,4 @@ pub(crate) mod provider_database;
 pub(crate) mod policy_database;
 pub(crate) mod attribute_provider_database;
 pub(crate) mod database;
+pub(crate) mod model;
