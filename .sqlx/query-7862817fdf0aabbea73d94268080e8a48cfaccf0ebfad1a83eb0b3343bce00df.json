@@ -1,6 +1,6 @@
 {
   "db_name": "MySQL",
-  "query": "SELECT *\r\nFROM object_database\r\nwhere object_id = ?;",
+  "query": "SELECT *\nFROM object_database\nWHERE namespace = ?\n  AND name = ?;",
   "describe": {
     "columns": [
       {
@@ -38,17 +38,27 @@
           "flags": "NOT_NULL | BINARY | NO_DEFAULT_VALUE",
           "max_size": 19
         }
+      },
+      {
+        "ordinal": 4,
+        "name": "updated_at",
+        "type_info": {
+          "type": "Datetime",
+          "flags": "NOT_NULL | BINARY | NO_DEFAULT_VALUE",
+          "max_size": 19
+        }
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 2
     },
     "nullable": [
+      false,
       false,
       false,
       false,
       false
     ]
   },
-  "hash": "a78eb5810799f332b29e8424da3fddae65f61aa3ff106d226179160d35baef1e"
+  "hash": "7862817fdf0aabbea73d94268080e8a48cfaccf0ebfad1a83eb0b3343bce00df"
 }

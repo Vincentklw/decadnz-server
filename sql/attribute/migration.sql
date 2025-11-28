@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS attribute_database
     description   TEXT,
     type          VARCHAR(32)  NOT NULL,
     default_value TEXT,
+    created_at    DATETIME     NOT NULL,
+    updated_at    DATETIME     NOT NULL,
     FOREIGN KEY (object_id) REFERENCES object_database (object_id),
     UNIQUE (object_id, name)
 )

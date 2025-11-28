@@ -17,7 +17,7 @@ impl Query {
         Object::by_id(object_id, context).await
     }
 
-    async fn namespace(&self, context: &RequestContext, namespace: String) -> FieldResult<Namespace> {
+    async fn namespace(&self, namespace: String) -> FieldResult<Namespace> {
         Ok(Namespace {
             name: namespace,
         })
