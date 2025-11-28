@@ -1,0 +1,24 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT DISTINCT namespace\nFROM object_database",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "namespace",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | MULTIPLE_KEY | NO_DEFAULT_VALUE",
+          "max_size": 1060
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "92aff99ae81080ae125141501abe77fd9f763cdf0ce1b8d4db68248b8b08314a"
+}

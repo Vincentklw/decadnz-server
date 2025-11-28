@@ -37,7 +37,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let database_connection_string = format!("mysql://{}:{}@{}:{}/{}", database_username, database_password, database_hostname, database_port, database_database);
 
     let pool = MySqlPoolOptions::new()
-        .connect(&*database_connection_string).await?;
+        .connect(&database_connection_string).await?;
 
     let object_db: Arc<Box<dyn ObjectDatabaseTrait>> = Arc::new(Box::new(ObjectDatabase::init(pool.clone()).await?));
     let attribute_db: Arc<Box<dyn AttributeDatabaseTrait>> = Arc::new(Box::new(AttributeDatabase::init(pool.clone()).await?));
@@ -46,9 +46,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let graphql_schema_dependencies = ServerDependencies {
         object_database: object_db.clone(),
+        attribute_database: attribute_db.clone(),
     };
 
-    let gql_thread = tokio::spawn(graphql_webserver.serve(6111, graphql_schema_dependencies).await?);
+    let app_port = env::var("APP_PORT")?.parse::<i32>()?;
+
+    let gql_thread = tokio::spawn(graphql_webserver.serve(app_port, graphql_schema_dependencies).await?);
 
     tokio::select! {
         _ = tokio::signal::ctrl_c() => {

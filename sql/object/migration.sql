@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS object_database
     namespace  VARCHAR(265) NOT NULL,
     name       VARCHAR(265) NOT NULL,
     created_at DATETIME     NOT NULL,
+    updated_at DATETIME     NOT NULL,
     UNIQUE (namespace, name)
 );

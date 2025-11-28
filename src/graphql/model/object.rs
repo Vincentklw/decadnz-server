@@ -1,4 +1,5 @@
 use crate::database;
+use crate::graphql::model::attribute::Attribute;
 use crate::graphql::request_context::RequestContext;
 use chrono::NaiveDateTime;
 use juniper::{graphql_object, FieldResult};
@@ -10,6 +11,7 @@ pub struct Object {
     namespace: String,
     name: String,
     created_at: NaiveDateTime,
+    updated_at: NaiveDateTime,
 }
 
 impl From<database::model::object::Object> for Object {
@@ -20,6 +22,7 @@ impl From<database::model::object::Object> for Object {
             namespace: value.namespace,
             name: value.name,
             created_at: value.created_at,
+            updated_at: value.updated_at,
         }
     }
 }
@@ -58,4 +61,10 @@ impl Object {
     pub fn name(&self) -> &String { &self.name }
 
     pub fn created_at(&self) -> &NaiveDateTime { &self.created_at }
+    
+    pub fn updated_at(&self) -> &NaiveDateTime { &self.updated_at }
+
+    pub async fn attributes(&self, context: &RequestContext) -> FieldResult<Vec<Attribute>> {
+        Attribute::by_object_id(context, self.object_id).await
+    }
 }

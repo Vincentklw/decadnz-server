@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO attribute_database(attribute_id, object_id, name, description, type, default_value,\r\n                               created_at, updated_at)\r\nVALUES (UUID(), ?, ?, ?, ?, ?, NOW(), NOW())",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "d9bf1add3c605b5e565c4bd3192e68d1c947b44bbff6cf3bf558be8aaa82a289"
+}

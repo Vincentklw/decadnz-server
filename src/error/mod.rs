@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone)]
 pub struct Error {
-    error: String,
+    pub error: String,
 }
 
 impl Display for Error {

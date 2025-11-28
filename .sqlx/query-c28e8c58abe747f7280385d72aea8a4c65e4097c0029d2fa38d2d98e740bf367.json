@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "DELETE\nFROM object_database\nWHERE object_id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "c28e8c58abe747f7280385d72aea8a4c65e4097c0029d2fa38d2d98e740bf367"
+}
