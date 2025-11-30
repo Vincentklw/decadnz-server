@@ -13,6 +13,10 @@ impl Query {
         Ok(app_version.to_string())
     }
 
+    async fn ping(&self) -> FieldResult<bool> {
+        Ok(true)
+    }
+
     async fn object(&self, context: &RequestContext, object_id: Uuid) -> FieldResult<Option<Object>> {
         Object::by_id(object_id, context).await
     }

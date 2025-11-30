@@ -74,6 +74,15 @@
           "flags": "NOT_NULL | BINARY | NO_DEFAULT_VALUE",
           "max_size": 19
         }
+      },
+      {
+        "ordinal": 8,
+        "name": "provider_id",
+        "type_info": {
+          "type": "String",
+          "flags": "UNSIGNED | BINARY",
+          "max_size": 144
+        }
       }
     ],
     "parameters": {
@@ -87,7 +96,8 @@
       false,
       true,
       false,
-      false
+      false,
+      true
     ]
   },
   "hash": "6e9a1a9ae95e47be6a0fe1c0d801ece1a9d372f208d83f17ba37cc5c09357693"

@@ -1,0 +1,54 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT *\r\nFROM provider_database;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "provider_id",
+        "type_info": {
+          "type": "String",
+          "flags": "NOT_NULL | PRIMARY_KEY | UNSIGNED | BINARY | NO_DEFAULT_VALUE",
+          "max_size": 144
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "provider_name",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 1060
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "api_endpoint",
+        "type_info": {
+          "type": "Blob",
+          "flags": "NOT_NULL | BLOB | NO_DEFAULT_VALUE",
+          "max_size": 262140
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "api_endpoint_access_token",
+        "type_info": {
+          "type": "Blob",
+          "flags": "NOT_NULL | BLOB | NO_DEFAULT_VALUE",
+          "max_size": 262140
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "804d652b62e5f4fb68719c3b9c6fee26295b0921e3385b4cf0f41d0bf4064584"
+}

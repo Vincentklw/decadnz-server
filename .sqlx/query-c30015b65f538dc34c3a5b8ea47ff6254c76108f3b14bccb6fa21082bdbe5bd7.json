@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "CREATE TABLE IF NOT EXISTS provider_database\r\n(\r\n    provider_id               UUID PRIMARY KEY,\r\n    provider_name             VARCHAR(265) NOT NULL,\r\n    api_endpoint              TEXT         NOT NULL,\r\n    api_endpoint_access_token TEXT         NOT NULL\r\n)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "c30015b65f538dc34c3a5b8ea47ff6254c76108f3b14bccb6fa21082bdbe5bd7"
+}

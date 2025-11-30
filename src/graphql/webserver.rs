@@ -1,5 +1,6 @@
 use crate::database::attribute_database::AttributeDatabaseTrait;
 use crate::database::object_database::ObjectDatabaseTrait;
+use crate::database::provider_database::{ProviderDatabase, ProviderDatabaseTrait};
 use crate::graphql::request_context::{RequestContext, RequestContextDatabase};
 use crate::graphql::schema;
 use crate::graphql::schema::Schema;
@@ -26,6 +27,7 @@ impl Webserver {
 pub struct ServerDependencies {
     pub object_database: Arc<Box<dyn ObjectDatabaseTrait>>,
     pub attribute_database: Arc<Box<dyn AttributeDatabaseTrait>>,
+    pub provider_database: Arc<Box<dyn ProviderDatabaseTrait>>,
 }
 
 struct WebApp {}
@@ -52,6 +54,7 @@ impl WebApp {
             databases: RequestContextDatabase {
                 object_database: dependencies.object_database.clone(),
                 attribute_database: dependencies.attribute_database.clone(),
+                provider_database: dependencies.provider_database.clone(),
             },
         };
         graphql_handler(

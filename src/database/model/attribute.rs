@@ -10,4 +10,5 @@ pub struct Attribute {
     pub default_value: Option<String>,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
+    pub provider_id: Option<Vec<u8>>,
 }

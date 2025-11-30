@@ -1,6 +1,6 @@
-use crate::database;
 use crate::graphql::model::attribute::Attribute;
 use crate::graphql::request_context::RequestContext;
+use crate::{database, util};
 use chrono::NaiveDateTime;
 use juniper::{graphql_object, FieldResult};
 use std::str::FromStr;
@@ -16,9 +16,8 @@ pub struct Object {
 
 impl From<database::model::object::Object> for Object {
     fn from(value: database::model::object::Object) -> Self {
-        let str = String::from_utf8(value.object_id).unwrap();
         Self {
-            object_id: Uuid::from_str(&*str).unwrap(),
+            object_id: util::transform::vector_to_uuid(value.object_id).unwrap(),
             namespace: value.namespace,
             name: value.name,
             created_at: value.created_at,
@@ -61,7 +60,7 @@ impl Object {
     pub fn name(&self) -> &String { &self.name }
 
     pub fn created_at(&self) -> &NaiveDateTime { &self.created_at }
-    
+
     pub fn updated_at(&self) -> &NaiveDateTime { &self.updated_at }
 
     pub async fn attributes(&self, context: &RequestContext) -> FieldResult<Vec<Attribute>> {

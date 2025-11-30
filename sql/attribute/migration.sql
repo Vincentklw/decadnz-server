@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS attribute_database
     default_value TEXT,
     created_at    DATETIME     NOT NULL,
     updated_at    DATETIME     NOT NULL,
+    provider_id   UUID,
     FOREIGN KEY (object_id) REFERENCES object_database (object_id),
     UNIQUE (object_id, name)
 )

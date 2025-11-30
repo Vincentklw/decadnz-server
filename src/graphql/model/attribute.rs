@@ -1,6 +1,8 @@
 use crate::error::Error;
 use crate::graphql::model::object::Object;
+use crate::graphql::model::provider::Provider;
 use crate::graphql::request_context::RequestContext;
+use crate::util;
 use chrono::NaiveDateTime;
 use juniper::{graphql_object, FieldResult};
 use std::str::FromStr;
@@ -54,9 +56,9 @@ pub struct Attribute {
     default_value: AttributeValue,
     created_at: NaiveDateTime,
     updated_at: NaiveDateTime,
+    provider_id: Option<Uuid>,
 }
 
-#[graphql_object(context = RequestContext)]
 impl Attribute {
     pub async fn create(context: &RequestContext, object_id: Uuid, name: String, description: Option<String>, r#type: String, default_value: Option<String>) -> FieldResult<bool> {
         context.databases.attribute_database.create(object_id, name, description, r#type, default_value).await?;
@@ -69,26 +71,34 @@ impl Attribute {
         res.iter().for_each(|p| arr.push(Attribute::from(p.clone())));
         Ok(arr)
     }
+}
 
+#[graphql_object(context = RequestContext)]
+impl Attribute {
     pub fn attribute_id(&self) -> &Uuid { &self.attribute_id }
     pub fn name(&self) -> &String { &self.name }
 
     pub fn description(&self) -> &Option<String> { &self.description }
 
     pub fn r#type(&self) -> String { self.r#type.as_ref().to_string().to_lowercase() }
+
+    pub async fn provider(&self, context: &RequestContext) -> Option<Provider> {
+        self.provider_id?;
+        Provider::by_id(self.provider_id?, context).await.unwrap()
+    }
 }
 
 impl From<crate::database::model::attribute::Attribute> for Attribute {
     fn from(value: crate::database::model::attribute::Attribute) -> Self {
-        let str = String::from_utf8(value.attribute_id).unwrap();
         Self {
-            attribute_id: Uuid::from_str(&*str).unwrap(),
+            attribute_id: util::transform::vector_to_uuid(value.attribute_id).unwrap(),
             name: value.name,
             description: value.description,
             r#type: AttributeType::from_str(value.r#type.as_str()).unwrap(),
             default_value: AttributeValue::Bool(false),
             created_at: value.created_at,
             updated_at: value.updated_at,
+            provider_id: value.provider_id.map(|e| util::transform::vector_to_uuid(e).unwrap()),
         }
     }
 }

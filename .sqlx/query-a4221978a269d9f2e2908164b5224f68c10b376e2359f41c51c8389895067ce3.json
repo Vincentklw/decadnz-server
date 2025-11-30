@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO provider_database(provider_id, provider_name, api_endpoint, api_endpoint_access_token)\r\nVALUES (UUID(), ?, ?, ?);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "a4221978a269d9f2e2908164b5224f68c10b376e2359f41c51c8389895067ce3"
+}
